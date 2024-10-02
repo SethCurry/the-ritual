@@ -1,4 +1,4 @@
-import RateLimiter from "../../util/RateLimiter";
+import RateLimiter from "../../../util/RateLimiter";
 import ScryfallList from "./responses/ScryfallList";
 
 export default class ScryfallPager<T> {

@@ -93,3 +93,4 @@ out/
 
 # Database files
 *.sqlite
+/.local

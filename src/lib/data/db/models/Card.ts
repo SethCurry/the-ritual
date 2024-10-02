@@ -1,84 +1,35 @@
 import {
   Entity,
   Column,
-  PrimaryGeneratedColumn,
   ManyToMany,
   OneToMany,
+  PrimaryGeneratedColumn,
 } from "typeorm";
 import Keyword from "./Keyword";
 import Color from "./Color";
 import CardPart from "./CardPart";
+import Printing from "./Printing";
 
 @Entity()
 export default class Card {
   @PrimaryGeneratedColumn()
   public id: number;
 
+  /**
+   * The ID that Scryfall uses to refer to this card.
+   */
+  @Column("text")
+  public scryfallId: string;
+
+  /**
+   * The name of the card.  For dual-sided/faced cards,
+   * this will be formatted as "Card 1 // Card 2".
+   */
   @Column("text")
   public name: string;
 
   @Column("text")
   public oracleId: string;
-
-  @Column("text")
-  public rarity: string;
-
-  @Column("text")
-  public flavorText: string;
-
-  @Column("text")
-  public cardBackId: string;
-
-  @Column("text")
-  public artist: string;
-
-  @Column("text")
-  public illustrationId: string;
-
-  @Column("text")
-  public borderColor: string;
-
-  @Column("text")
-  public frame: string;
-
-  @Column("text")
-  public language: string;
-
-  @Column("text")
-  public setId: string;
-
-  @Column("text")
-  public setCode: string;
-
-  @Column("text")
-  public setName: string;
-
-  @Column("text")
-  public setType: string;
-
-  @Column("text")
-  public setUri: string;
-
-  @Column("text")
-  public setSearchUri: string;
-
-  @Column("text")
-  public scryfallSetUri: string;
-
-  @Column("text")
-  public rulingsUri: string;
-
-  @Column("text")
-  public printsSearchUri: string;
-
-  @Column("text")
-  public collectorNumber: string;
-
-  @Column("text")
-  public uri: string;
-
-  @Column("text")
-  public scryfallUri: string;
 
   @Column("text")
   public layout: string;
@@ -102,61 +53,10 @@ export default class Card {
   public loyalty: string;
 
   @Column("boolean")
-  public highresImage: boolean;
-
-  @Column("boolean")
-  public highresScan: boolean;
-
-  @Column("boolean")
   public reserved: boolean;
-
-  @Column("boolean")
-  public foil: boolean;
-
-  @Column("boolean")
-  public nonfoil: boolean;
-
-  @Column("boolean")
-  public oversized: boolean;
-
-  @Column("boolean")
-  public promo: boolean;
-
-  @Column("boolean")
-  public reprint: boolean;
-
-  @Column("boolean")
-  public variation: boolean;
-
-  @Column("boolean")
-  public digital: boolean;
-
-  @Column("boolean")
-  public fullArt: boolean;
-
-  @Column("boolean")
-  public textless: boolean;
-
-  @Column("boolean")
-  public booster: boolean;
-
-  @Column("boolean")
-  public storySpotlight: boolean;
 
   @Column("float")
   public cmc: number;
-
-  @Column("integer")
-  public mtgoId: number;
-
-  @Column("integer")
-  public mtgoFoilId: number;
-
-  @Column("integer")
-  public tcgplayerId: number;
-
-  @Column("integer")
-  public cardmarketId: number;
 
   @Column("integer")
   public edhrecRank: number;
@@ -181,15 +81,6 @@ export default class Card {
 
   @Column("text")
   public mtgtop8Url: string;
-
-  @Column("text")
-  public pricesUsd: string;
-
-  @Column("text")
-  public pricesUsdFoil: string;
-
-  @Column("text")
-  public pricesUsdEtched: string;
 
   @Column("text")
   public legalityStandard: string;
@@ -254,23 +145,8 @@ export default class Card {
   @Column("text")
   public legalityPredh: string;
 
-  @Column("text")
-  public imageUriSmall: string;
-
-  @Column("text")
-  public imageUriNormal: string;
-
-  @Column("text")
-  public imageUriLarge: string;
-
-  @Column("text")
-  public imageUriPng: string;
-
-  @Column("text")
-  public imageUriArtCrop: string;
-
-  @Column("text")
-  public imageUriBorderCrop: string;
+  @OneToMany(() => Printing, (printing) => printing.card)
+  public printings: Printing[];
 
   @ManyToMany(() => Keyword, (keyword) => keyword.cards)
   public keywords: Keyword[];

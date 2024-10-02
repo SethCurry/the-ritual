@@ -1,4 +1,4 @@
-import RateLimiter from "../../util/RateLimiter";
+import RateLimiter from "../../../util/RateLimiter";
 
 export default abstract class ScryfallClientBase {
   protected rateLimiter: RateLimiter;

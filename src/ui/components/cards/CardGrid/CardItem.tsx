@@ -1,4 +1,4 @@
-import ScryfallCard from "../../../lib/mtg/scryfall/responses/ScryfallCard";
+import ScryfallCard from "../../../../lib/mtg/3p/scryfall/responses/ScryfallCard";
 
 export interface CardItemProps {
   card: ScryfallCard;

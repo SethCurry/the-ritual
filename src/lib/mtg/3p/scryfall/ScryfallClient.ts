@@ -1,4 +1,4 @@
-import RateLimiter from "../../util/RateLimiter";
+import RateLimiter from "../../../util/RateLimiter";
 import ScryfallCardClient from "./ScryfallCardClient";
 
 export default class ScryfallClient {

@@ -1,5 +1,5 @@
 import Flex from "antd/es/flex";
-import ScryfallCard from "../../../lib/mtg/scryfall/responses/ScryfallCard";
+import ScryfallCard from "../../../../lib/mtg/3p/scryfall/responses/ScryfallCard";
 import CardRow from "./CardRow";
 
 export interface CardGridProps {

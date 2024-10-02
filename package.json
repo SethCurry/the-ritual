@@ -26,6 +26,8 @@
     "@types/node": "^22.7.4",
     "@types/react": "^18.3.10",
     "@types/react-dom": "^18.3.0",
+    "@types/stream-chain": "^2.1.0",
+    "@types/stream-json": "^1.7.7",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "@vercel/webpack-asset-relocator-loader": "1.7.3",
@@ -56,6 +58,7 @@
     "react-router-dom": "^6.26.2",
     "reflect-metadata": "^0.2.2",
     "sqlite3": "^5.1.7",
+    "stream-json": "^1.8.0",
     "typeorm": "^0.3.20"
   }
 }
