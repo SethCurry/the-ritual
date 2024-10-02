@@ -41,7 +41,7 @@ export default interface ScryfallCard {
   frame: string;
   language: string;
   set_id: string;
-  set_code: string;
+  set: string;
   set_name: string;
   set_type: string;
   set_uri: string;

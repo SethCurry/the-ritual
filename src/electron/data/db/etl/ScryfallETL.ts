@@ -1,17 +1,25 @@
 import { DataSource } from "typeorm";
-import { mapScryfallBulkData } from "../../../mtg/3p/scryfall/ScryfallBulkReader";
+import { mapScryfallBulkData } from "../../../../lib/mtg/3p/scryfall/ScryfallBulkReader";
 import Artist from "../models/Artist";
 import CardSet from "../models/CardSet";
-import { AllColors } from "../../../mtg/Colors";
+import { AllColors } from "../../../../lib/mtg/Colors";
 import Color from "../models/Color";
 
 export async function loadArtistsFromScryfallBulkData(
   filePath: string,
   db: DataSource
 ) {
+  const seenArtists = new Set<string>();
   const artistRepo = db.getRepository(Artist);
 
   return mapScryfallBulkData(filePath, async (card) => {
+    if (seenArtists.has(card.artist)) {
+      return;
+    }
+
+    seenArtists.add(card.artist);
+
+    console.log("Checking artist", card.artist);
     const foundArtist = await artistRepo.findOneBy({
       name: card.artist,
     });
@@ -31,14 +39,23 @@ export async function loadSetsFromScryfallBulkData(
 ) {
   const setRepo = db.getRepository(CardSet);
 
+  const seenSets = new Set<string>();
+
   return mapScryfallBulkData(filePath, async (card) => {
+    if (seenSets.has(card.set)) {
+      return;
+    }
+
+    seenSets.add(card.set);
+
+    console.log("Checking set", card.set_name);
     const foundSet = await setRepo.findOneBy({
-      code: card.set_code,
+      code: card.set,
     });
 
     if (foundSet === null) {
       const newSet = new CardSet();
-      newSet.code = card.set_code;
+      newSet.code = card.set;
       newSet.name = card.set_name;
 
       await setRepo.save(newSet);
@@ -65,7 +82,9 @@ export async function loadColors(db: DataSource) {
 }
 
 export async function loadScryfallBulkData(filePath: string, db: DataSource) {
-  await loadColors(db);
-  await loadArtistsFromScryfallBulkData(filePath, db);
-  await loadSetsFromScryfallBulkData(filePath, db);
+  return Promise.all([
+    loadColors(db),
+    loadArtistsFromScryfallBulkData(filePath, db),
+    loadSetsFromScryfallBulkData(filePath, db),
+  ]);
 }

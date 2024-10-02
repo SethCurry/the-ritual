@@ -6,6 +6,7 @@ import Menu from "antd/es/menu/menu";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import ScryfallLogo from "../components/icons/ScryfallLogo";
+import { SettingOutlined } from "@ant-design/icons";
 
 export interface DefaultLayoutProps {
   children: React.ReactNode;
@@ -34,6 +35,11 @@ const menuItems: MenuItem[] = [
         icon: <SearchOutlined />,
       },
     ],
+  },
+  {
+    label: "Admin",
+    icon: <SettingOutlined />,
+    link: "/admin",
   },
 ];
 

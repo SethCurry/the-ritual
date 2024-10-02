@@ -1,7 +1,7 @@
 import { IpcRenderer, ipcRenderer } from "electron";
 import { IpcRequest } from "../../ipc/IpcRequest";
 
-export class IpcService<T, P> {
+export default class IpcClient<T, P> {
   private ipcRenderer?: IpcRenderer;
   public readonly channel: string;
 
@@ -14,12 +14,13 @@ export class IpcService<T, P> {
     }
   }
 
-  public send<T>(channel: string, request: IpcRequest<T>): Promise<P> {
-    if (!request.responseChannel) {
-      request.responseChannel = `${channel}-response-${new Date().getTime()}`;
-    }
+  public send<T>(data: T): Promise<P> {
+    const request: IpcRequest<T> = {
+      responseChannel: `${this.channel}-response-${new Date().getTime()}`,
+      data,
+    };
 
-    this.ipcRenderer.send(channel, request);
+    this.ipcRenderer.send(this.channel, request);
 
     return new Promise((resolve, reject) => {
       this.ipcRenderer.once(request.responseChannel, (event, response) =>

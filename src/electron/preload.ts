@@ -1,18 +1,29 @@
 // See the Electron documentation for details on how to use preload scripts:
-// https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
-import { contextBridge, ipcRenderer } from "electron";
 
-contextBridge.exposeInMainWorld("api", {
-  send: (channel: string, data: any) => {
-    let validChannels: string[] = [];
-    if (validChannels.includes(channel)) {
-      ipcRenderer.send(channel, data);
-    }
-  },
-  receive: (channel: string, func: (...args: any[]) => void) => {
-    let validChannels: string[] = [];
-    if (validChannels.includes(channel)) {
-      ipcRenderer.on(channel, (event, ...args) => func(...args));
-    }
-  },
+import { contextBridge, ipcRenderer, IpcRendererEvent, shell } from "electron";
+import { ScryfallBulkDataLoaderServiceChannel } from "../ipc/IpcServiceChannels";
+
+// https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
+process.once("loaded", () => {
+  contextBridge.exposeInMainWorld("ritual", {
+    on(
+      eventName: string,
+      callback: (event: IpcRendererEvent, ...args: any[]) => void
+    ) {
+      ipcRenderer.on(eventName, callback);
+    },
+
+    async scryfallBulkDataLoader() {
+      ipcRenderer.send(ScryfallBulkDataLoaderServiceChannel, {});
+
+      return new Promise((resolve, reject) => {
+        ipcRenderer.once(
+          ScryfallBulkDataLoaderServiceChannel,
+          (event, files) => {
+            resolve(files);
+          }
+        );
+      });
+    },
+  });
 });
