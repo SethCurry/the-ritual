@@ -17,8 +17,5 @@ export const mainConfig: Configuration = {
   plugins,
   resolve: {
     extensions: [".js", ".ts", ".jsx", ".tsx", ".css", ".json"],
-    alias: {
-      "@": path.resolve(__dirname, "src/"),
-    },
   },
 };

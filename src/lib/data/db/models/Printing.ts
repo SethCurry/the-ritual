@@ -1,7 +1,14 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  OneToMany,
+} from "typeorm";
 import Card from "./Card";
 import Artist from "./Artist";
 import CardSet from "./CardSet";
+import DeckCard from "./DeckCard";
 
 @Entity()
 export default class Printing {
@@ -110,6 +117,12 @@ export default class Printing {
   @Column("integer")
   public cardmarketId: number;
 
+  @Column("boolean")
+  public highresImage: boolean;
+
+  @Column("boolean")
+  public highresScan: boolean;
+
   @ManyToOne(() => CardSet, (set) => set.printings)
   public set: CardSet;
 
@@ -118,4 +131,7 @@ export default class Printing {
 
   @ManyToOne(() => Artist, (artist) => artist.printings)
   public artist: Artist;
+
+  @OneToMany(() => DeckCard, (deckCard) => deckCard.printing)
+  public deckCards: DeckCard[];
 }

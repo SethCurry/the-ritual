@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 import Printing from "./Printing";
 
 @Entity()
-export default class Set {
+export default class CardSet {
   @PrimaryGeneratedColumn()
   public id: number;
 
@@ -11,12 +11,6 @@ export default class Set {
 
   @Column("text")
   public code: string;
-
-  @Column("boolean")
-  public highresImage: boolean;
-
-  @Column("boolean")
-  public highresScan: boolean;
 
   @OneToMany(() => Printing, (printing) => printing.set)
   public printings: Printing[];
