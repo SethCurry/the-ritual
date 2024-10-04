@@ -1,9 +1,10 @@
 import { DataSource } from "typeorm";
-import { mapScryfallBulkData } from "../../../../lib/mtg/3p/scryfall/ScryfallBulkReader";
+import { mapScryfallBulkData } from "../../../../lib/3p/scryfall/ScryfallBulkReader";
 import Artist from "../models/Artist";
 import CardSet from "../models/CardSet";
 import { AllColors } from "../../../../lib/mtg/Colors";
 import Color from "../models/Color";
+import Card from "../models/Card";
 
 export async function loadArtistsFromScryfallBulkData(
   filePath: string,
@@ -19,7 +20,6 @@ export async function loadArtistsFromScryfallBulkData(
 
     seenArtists.add(card.artist);
 
-    console.log("Checking artist", card.artist);
     const foundArtist = await artistRepo.findOneBy({
       name: card.artist,
     });
@@ -29,6 +29,56 @@ export async function loadArtistsFromScryfallBulkData(
       newArtist.name = card.artist;
 
       await artistRepo.save(newArtist);
+    }
+  });
+}
+
+export async function loadCardsFromScryfallBulkData(
+  filePath: string,
+  db: DataSource
+) {
+  const cardRepo = db.getRepository(Card);
+
+  return mapScryfallBulkData(filePath, async (card) => {
+    const existingCard = await cardRepo.findOne({
+      where: {
+        scryfallId: card.id,
+      },
+    });
+
+    if (existingCard === null) {
+      const newCard = new Card();
+      newCard.scryfallId = card.id;
+      newCard.name = card.name;
+      newCard.oracleId = card.oracle_id;
+      newCard.layout = card.layout;
+      newCard.manaCost = card.mana_cost;
+      newCard.typeLine = card.type_line;
+      newCard.oracleText = card.oracle_text;
+      newCard.power = card.power;
+      newCard.toughness = card.toughness;
+      newCard.loyalty = card.loyalty;
+      newCard.reserved = card.reserved;
+      newCard.cmc = card.cmc;
+      newCard.edhrecRank = card.edhrec_rank;
+      newCard.pennyRank = card.penny_rank;
+      newCard.releasedAt = card.released_at;
+      newCard.legalityStandard = card.legalities.standard;
+      newCard.legalityFuture = card.legalities.future;
+      newCard.legalityHistoric = card.legalities.historic;
+      newCard.legalityGladiator = card.legalities.gladiator;
+      newCard.legalityPioneer = card.legalities.pioneer;
+      newCard.legalityExplorer = card.legalities.explorer;
+      newCard.legalityModern = card.legalities.modern;
+      newCard.legalityLegacy = card.legalities.legacy;
+      newCard.legalityPauper = card.legalities.pauper;
+      newCard.legalityCommander = card.legalities.commander;
+      newCard.legalityDuel = card.legalities.duel;
+      newCard.legalityOldschool = card.legalities.oldschool;
+      newCard.legalityPremodern = card.legalities.premodern;
+      newCard.legalityPredh = card.legalities.predh;
+
+      await cardRepo.save(newCard);
     }
   });
 }
@@ -48,7 +98,6 @@ export async function loadSetsFromScryfallBulkData(
 
     seenSets.add(card.set);
 
-    console.log("Checking set", card.set_name);
     const foundSet = await setRepo.findOneBy({
       code: card.set,
     });
@@ -82,9 +131,9 @@ export async function loadColors(db: DataSource) {
 }
 
 export async function loadScryfallBulkData(filePath: string, db: DataSource) {
-  return Promise.all([
-    loadColors(db),
-    loadArtistsFromScryfallBulkData(filePath, db),
-    loadSetsFromScryfallBulkData(filePath, db),
-  ]);
+  const colors = await loadColors(db);
+  const artists = await loadArtistsFromScryfallBulkData(filePath, db);
+  const sets = await loadSetsFromScryfallBulkData(filePath, db);
+  const cards = await loadCardsFromScryfallBulkData(filePath, db);
+  return { colors, artists, sets, cards };
 }

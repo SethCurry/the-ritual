@@ -3,9 +3,9 @@ import DefaultLayout from "../layouts/DefaultLayout";
 import { useState } from "react";
 import { Button, Divider, Flex } from "antd";
 import { scryfallClient } from "../state/Scryfall";
-import ScryfallCard from "../../lib/mtg/3p/scryfall/responses/ScryfallCard";
+import ScryfallCard from "../../lib/3p/scryfall/responses/ScryfallCard";
 import CardGrid from "../components/cards/CardGrid/CardGrid";
-import ScryfallPager from "../../lib/mtg/3p/scryfall/ScryfallPager";
+import ScryfallPager from "../../lib/3p/scryfall/ScryfallPager";
 
 export default function ScryfallSearchRoute() {
   const [userQuery, setUserQuery] = useState("");

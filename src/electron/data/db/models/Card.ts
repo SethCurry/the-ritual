@@ -34,23 +34,23 @@ export default class Card {
   @Column("text")
   public layout: string;
 
-  @Column("text")
-  public manaCost: string;
+  @Column("text", { nullable: true })
+  public manaCost: string | null;
 
   @Column("text")
   public typeLine: string;
 
-  @Column("text")
-  public oracleText: string;
+  @Column("text", { nullable: true })
+  public oracleText: string | null;
 
-  @Column("text")
-  public power: string;
+  @Column("text", { nullable: true })
+  public power: string | null;
 
-  @Column("text")
+  @Column("text", { nullable: true })
   public toughness: string;
 
-  @Column("text")
-  public loyalty: string;
+  @Column("text", { nullable: true })
+  public loyalty: string | null;
 
   @Column("boolean")
   public reserved: boolean;
@@ -58,92 +58,77 @@ export default class Card {
   @Column("float")
   public cmc: number;
 
-  @Column("integer")
-  public edhrecRank: number;
+  @Column("integer", { nullable: true })
+  public edhrecRank: number | null;
 
-  @Column("integer")
-  public pennyRank: number;
+  @Column("integer", { nullable: true })
+  public pennyRank: number | null;
 
   @Column("text")
   public releasedAt: string;
 
-  @Column("text")
-  public gathererUrl: string;
+  @Column("text", { nullable: true })
+  public legalityStandard: string | null;
 
-  @Column("text")
-  public tcgplayerInfiniteArticlesUrl: string;
+  @Column("text", { nullable: true })
+  public legalityFuture: string | null;
 
-  @Column("text")
-  public tcgplayerInfiniteDecksUrl: string;
+  @Column("text", { nullable: true })
+  public legalityHistoric: string | null;
 
-  @Column("text")
-  public edhrecUrl: string;
+  @Column("text", { nullable: true })
+  public legalityGladiator: string | null;
 
-  @Column("text")
-  public mtgtop8Url: string;
+  @Column("text", { nullable: true })
+  public legalityPioneer: string | null;
 
-  @Column("text")
-  public legalityStandard: string;
+  @Column("text", { nullable: true })
+  public legalityExplorer: string | null;
 
-  @Column("text")
-  public legalityFuture: string;
+  @Column("text", { nullable: true })
+  public legalityModern: string | null;
 
-  @Column("text")
-  public legalityHistoric: string;
+  @Column("text", { nullable: true })
+  public legalityLegacy: string | null;
 
-  @Column("text")
-  public legalityGladiator: string;
+  @Column("text", { nullable: true })
+  public legalityPauper: string | null;
 
-  @Column("text")
-  public legalityPioneer: string;
+  @Column("text", { nullable: true })
+  public legalityVintage: string | null;
 
-  @Column("text")
-  public legalityExplorer: string;
+  @Column("text", { nullable: true })
+  public legalityPenny: string | null;
 
-  @Column("text")
-  public legalityModern: string;
+  @Column("text", { nullable: true })
+  public legalityCommander: string | null;
 
-  @Column("text")
-  public legalityLegacy: string;
+  @Column("text", { nullable: true })
+  public legalityOathbreaker: string | null;
 
-  @Column("text")
-  public legalityPauper: string;
+  @Column("text", { nullable: true })
+  public legalityBrawl: string | null;
 
-  @Column("text")
-  public legalityVintage: string;
+  @Column("text", { nullable: true })
+  public legalityHistoricBrawl: string | null;
 
-  @Column("text")
-  public legalityPenny: string;
+  @Column("text", { nullable: true })
+  public legalityAlchemy: string | null;
 
-  @Column("text")
-  public legalityCommander: string;
+  @Column("text", { nullable: true })
+  public legalityPauperCommander: string | null;
 
-  @Column("text")
-  public legalityOathbreaker: string;
+  @Column("text", { nullable: true })
+  public legalityDuel: string | null;
 
-  @Column("text")
-  public legalityBrawl: string;
+  @Column("text", { nullable: true })
+  public legalityOldschool: string | null;
 
-  @Column("text")
-  public legalityHistoricBrawl: string;
+  @Column("text", { nullable: true })
+  public legalityPremodern: string | null;
 
-  @Column("text")
-  public legalityAlchemy: string;
-
-  @Column("text")
-  public legalityPauperCommander: string;
-
-  @Column("text")
-  public legalityDuel: string;
-
-  @Column("text")
-  public legalityOldschool: string;
-
-  @Column("text")
-  public legalityPremodern: string;
-
-  @Column("text")
-  public legalityPredh: string;
+  @Column("text", { nullable: true })
+  public legalityPredh: string | null;
 
   @OneToMany(() => Printing, (printing) => printing.card)
   public printings: Printing[];

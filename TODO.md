@@ -1,1 +1,3 @@
 - Deck builder/storer
+- Cache card images from Scryfall
+- Ingest printings from Scryfall

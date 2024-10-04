@@ -33,7 +33,7 @@ const AppDataSource = new DataSource({
     Printing,
   ],
   synchronize: true,
-  logging: true,
+  logging: false,
 });
 
 AppDataSource.initialize().then(() => {
@@ -58,7 +58,7 @@ const createWindow = (): void => {
 
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    fullscreen: true,
+    fullscreen: false,
     maximizable: true,
     minimizable: true,
     movable: true,
