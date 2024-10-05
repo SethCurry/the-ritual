@@ -1,7 +1,11 @@
 // See the Electron documentation for details on how to use preload scripts:
 
 import { contextBridge, ipcRenderer, IpcRendererEvent, shell } from "electron";
-import { ScryfallBulkDataLoaderServiceChannel } from "../ipc/IpcServiceChannels";
+import {
+  CreateDeckServiceChannel,
+  ListDecksServiceChannel,
+  ScryfallBulkDataLoaderServiceChannel,
+} from "../ipc/IpcServiceChannels";
 
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 process.once("loaded", () => {
@@ -23,6 +27,26 @@ process.once("loaded", () => {
             resolve(files);
           }
         );
+      });
+    },
+
+    async listDecks() {
+      ipcRenderer.send(ListDecksServiceChannel, {});
+
+      return new Promise((resolve, reject) => {
+        ipcRenderer.once(ListDecksServiceChannel, (event, decks) => {
+          resolve(decks);
+        });
+      });
+    },
+
+    async createDeck(name: string) {
+      ipcRenderer.send(CreateDeckServiceChannel, { data: { name } });
+
+      return new Promise((resolve, reject) => {
+        ipcRenderer.once(CreateDeckServiceChannel, (event, deck) => {
+          resolve({});
+        });
       });
     },
   });

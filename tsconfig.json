@@ -18,5 +18,5 @@
     }
   },
   "include": ["src/**/*"],
-  "files": ["src/types/ui.d.ts"]
+  "files": ["src/electron/ipc/ipc.d.ts"]
 }
