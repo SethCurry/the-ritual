@@ -81,6 +81,7 @@ const createWindow = (): void => {
     thickFrame: false,
     useContentSize: true,
     title: "The Ritual - MTG Toolbox",
+    icon: "./assets/icons/icon-512.png",
     modal: false,
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
