@@ -18,6 +18,15 @@ export interface ListDecksItem {
   name: string;
 }
 
+export interface CreateDeckRequest {
+  name: string;
+}
+
+export interface CreateDeckResponse {
+  id: number;
+  name: string;
+}
+
 export type ArgumentTypes<F extends Function> = F extends (
   ...args: infer A
 ) => any

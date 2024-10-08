@@ -1,6 +1,6 @@
 import Input from "antd/es/input/Input";
 import DefaultLayout from "../layouts/DefaultLayout";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button, Divider, Flex } from "antd";
 import { scryfallClient } from "../state/Scryfall";
 import ScryfallCard from "../../lib/3p/scryfall/responses/ScryfallCard";

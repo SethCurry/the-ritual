@@ -1,10 +1,13 @@
 import Button from "antd/es/button/button";
 import DefaultLayout from "../layouts/DefaultLayout";
 import React from "react";
+import { getRpc } from "../util";
 
 export default function AdminOverview() {
+  const rpc = getRpc();
+
   const loadData = async () => {
-    window.rpc.scryfallBulkDataLoader().then((files: string[]) => {
+    rpc.scryfallBulkDataLoader({}).then((files: string[]) => {
       console.log(files);
     });
   };

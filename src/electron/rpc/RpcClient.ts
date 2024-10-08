@@ -1,9 +1,13 @@
 import { ipcRenderer } from "electron";
 import { RpcServer, TRpcServer } from "./RpcServer";
-import { RpcRequest } from "./types";
+import { ArgumentTypes, RpcRequest } from "./types";
+
+export type RpcRequestType<R> = R extends RpcRequest<infer T> ? T : never;
 
 export type TRpcClient = {
-  [key in keyof TRpcServer]: TRpcServer[key];
+  [key in keyof TRpcServer]: (
+    data: RpcRequestType<ArgumentTypes<TRpcServer[key]>[1]>
+  ) => ReturnType<TRpcServer[key]>;
 };
 
 export function createRpcClient(): TRpcClient {

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Input, Table } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { ListDecksItem, ListDecksResponse } from "../../electron/rpc/types";
+import { getRpc } from "../util";
 
 export default function ListDecks() {
   const [decks, setDecks] = useState<ListDecksItem[]>([]);
@@ -14,8 +15,10 @@ export default function ListDecks() {
     },
   ];
 
+  const rpc = getRpc();
+
   useEffect(() => {
-    window.rpc.listDecks().then((newDecks: ListDecksResponse) => {
+    rpc.listDecks({}).then((newDecks: ListDecksResponse) => {
       console.log("listDecks", newDecks);
       setDecks(newDecks.decks);
     });
@@ -26,13 +29,15 @@ export default function ListDecks() {
   return (
     <DefaultLayout>
       <h2>Decks</h2>
-      <span style={{ width: "100%" }}>
+      <span style={{ width: "100%Window & typeof globalThis" }}>
         <Input
           value={newDeckName}
           onChange={(e) => setNewDeckName(e.target.value)}
           style={{ width: "25%" }}
         />
-        <Button onClick={async () => await window.rpc.createDeck(newDeckName)}>
+        <Button
+          onClick={async () => await rpc.createDeck({ name: newDeckName })}
+        >
           New Deck
         </Button>
       </span>

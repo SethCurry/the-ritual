@@ -5,3 +5,5 @@ declare global {
     rpc: TRpcClient;
   }
 }
+
+export {};

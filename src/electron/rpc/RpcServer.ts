@@ -1,13 +1,18 @@
 import {
   ArgumentTypes,
+  CreateDeckRequest,
+  CreateDeckResponse,
   ListDecksRequest,
   ListDecksResponse,
   RpcHandler,
   RpcRequest,
+  RPCResponseType,
 } from "./types";
 
 export type TRpcHandlers = {
   listDecks: (data: ListDecksRequest) => Promise<ListDecksResponse>;
+  scryfallBulkDataLoader: (data: object) => Promise<string[]>;
+  createDeck: (data: CreateDeckRequest) => Promise<CreateDeckResponse>;
 };
 
 export type TRpcEvent = {
@@ -25,7 +30,7 @@ export type TRpcServer = {
   [key in keyof TRpcHandlers]: (
     event: TRpcEvent,
     data: RpcRequest<ArgumentTypes<TRpcHandlers[key]>[0]>
-  ) => Promise<void>;
+  ) => Promise<RPCResponseType<TRpcHandlers[key]>>;
 };
 
 export class RpcServer implements TRpcServer {
@@ -38,16 +43,45 @@ export class RpcServer implements TRpcServer {
   async listDecks(
     event: TRpcEvent,
     data: RpcRequest<ListDecksRequest>
-  ): Promise<void> {
+  ): Promise<ListDecksResponse> {
     const wrapped = this.wrapHandler(this.handlers.listDecks);
 
     try {
       const result = await wrapped(event, data);
+      return result;
     } catch (error) {
       console.log("failed to list decks", error);
     }
 
     return;
+  }
+
+  async scryfallBulkDataLoader(
+    event: TRpcEvent,
+    data: RpcRequest<object>
+  ): Promise<string[]> {
+    const wrapped = this.wrapHandler(this.handlers.scryfallBulkDataLoader);
+
+    try {
+      const result = await wrapped(event, data);
+      return result;
+    } catch (error) {
+      console.log("failed to load scryfall bulk data", error);
+    }
+  }
+
+  async createDeck(
+    event: TRpcEvent,
+    data: RpcRequest<CreateDeckRequest>
+  ): Promise<CreateDeckResponse> {
+    const wrapped = this.wrapHandler(this.handlers.createDeck);
+
+    try {
+      const result = await wrapped(event, data);
+      return result;
+    } catch (error) {
+      console.log("failed to create deck", error);
+    }
   }
 
   registerHandlers() {

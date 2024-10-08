@@ -1,5 +1,11 @@
 import { DataSource } from "typeorm";
-import { ListDecksRequest, ListDecksResponse, RpcHandler } from "../types";
+import {
+  CreateDeckRequest,
+  CreateDeckResponse,
+  ListDecksRequest,
+  ListDecksResponse,
+  RpcHandler,
+} from "../types";
 import Deck from "../../data/db/models/Deck";
 
 export function createListDecksHandler(
@@ -11,17 +17,13 @@ export function createListDecksHandler(
   };
 }
 
-export interface CreateDeckRequest {
-  name: string;
-}
-
 export function createCreateDeckHandler(
   db: DataSource
-): RpcHandler<CreateDeckRequest, number> {
+): RpcHandler<CreateDeckRequest, CreateDeckResponse> {
   return async (data: CreateDeckRequest) => {
     const deckRepo = db.getRepository(Deck);
     const deck = await deckRepo.create({ name: data.name });
     await deckRepo.save(deck);
-    return deck.id;
+    return { id: deck.id, name: deck.name };
   };
 }
