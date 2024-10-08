@@ -28,6 +28,10 @@ const router = createHashRouter([
 
 const appRoot = document.getElementById("app");
 
+if (!appRoot) {
+  throw new Error("No app root found");
+}
+
 const root = createRoot(appRoot);
 root.render(
   <React.StrictMode>

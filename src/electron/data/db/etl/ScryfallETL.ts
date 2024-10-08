@@ -54,10 +54,10 @@ export async function loadCardsFromScryfallBulkData(
       newCard.layout = card.layout;
       newCard.manaCost = card.mana_cost;
       newCard.typeLine = card.type_line;
-      newCard.oracleText = card.oracle_text;
-      newCard.power = card.power;
-      newCard.toughness = card.toughness;
-      newCard.loyalty = card.loyalty;
+      newCard.oracleText = card.oracle_text ?? null;
+      newCard.power = card.power ?? null;
+      newCard.toughness = card.toughness ?? null;
+      newCard.loyalty = card.loyalty ?? null;
       newCard.reserved = card.reserved;
       newCard.cmc = card.cmc;
       newCard.edhrecRank = card.edhrec_rank;

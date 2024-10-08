@@ -3,7 +3,7 @@
     "target": "ES6",
     "allowJs": true,
     "module": "commonjs",
-    "skipLibCheck": true,
+    "skipLibCheck": false,
     "esModuleInterop": true,
     "noImplicitAny": true,
     "sourceMap": true,
@@ -17,6 +17,5 @@
       "*": ["node_modules/*"]
     }
   },
-  "include": ["src/**/*"],
-  "files": ["src/electron/ipc/ipc.d.ts"]
+  "files": ["src/types/images.d.ts", "src/types/rpc.d.ts"]
 }

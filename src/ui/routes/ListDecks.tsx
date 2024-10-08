@@ -1,13 +1,13 @@
 import Button from "antd/es/button/button";
 import DefaultLayout from "../layouts/DefaultLayout";
-import Deck from "../../electron/data/db/models/Deck";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input, Table } from "antd";
 import { ColumnsType } from "antd/es/table";
+import { ListDecksItem, ListDecksResponse } from "../../electron/rpc/types";
 
 export default function ListDecks() {
-  const [decks, setDecks] = useState<Deck[]>([]);
-  const columns: ColumnsType<Deck> = [
+  const [decks, setDecks] = useState<ListDecksItem[]>([]);
+  const columns: ColumnsType<ListDecksItem> = [
     {
       title: "Name",
       dataIndex: "name",
@@ -15,8 +15,9 @@ export default function ListDecks() {
   ];
 
   useEffect(() => {
-    window.ritual.listDecks().then((newDecks: Deck[]) => {
-      setDecks(newDecks);
+    window.rpc.listDecks().then((newDecks: ListDecksResponse) => {
+      console.log("listDecks", newDecks);
+      setDecks(newDecks.decks);
     });
   }, [setDecks]);
 
@@ -31,9 +32,7 @@ export default function ListDecks() {
           onChange={(e) => setNewDeckName(e.target.value)}
           style={{ width: "25%" }}
         />
-        <Button
-          onClick={async () => await window.ritual.createDeck(newDeckName)}
-        >
+        <Button onClick={async () => await window.rpc.createDeck(newDeckName)}>
           New Deck
         </Button>
       </span>

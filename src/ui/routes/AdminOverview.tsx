@@ -1,9 +1,10 @@
 import Button from "antd/es/button/button";
 import DefaultLayout from "../layouts/DefaultLayout";
+import React from "react";
 
 export default function AdminOverview() {
   const loadData = async () => {
-    window.ritual.scryfallBulkDataLoader().then((files: string[]) => {
+    window.rpc.scryfallBulkDataLoader().then((files: string[]) => {
       console.log(files);
     });
   };

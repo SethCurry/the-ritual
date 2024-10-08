@@ -28,8 +28,8 @@ export default class Card {
   @Column("text")
   public name: string;
 
-  @Column("text")
-  public oracleId: string;
+  @Column("text", { nullable: true })
+  public oracleId?: string | null;
 
   @Column("text")
   public layout: string;
@@ -47,7 +47,7 @@ export default class Card {
   public power: string | null;
 
   @Column("text", { nullable: true })
-  public toughness: string;
+  public toughness: string | null;
 
   @Column("text", { nullable: true })
   public loyalty: string | null;

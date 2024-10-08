@@ -3,10 +3,13 @@ import SearchOutlined from "@ant-design/icons/lib/icons/SearchOutlined";
 import Layout, { Content, Footer, Header } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
 import Menu from "antd/es/menu/menu";
-import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import ScryfallLogo from "../components/icons/ScryfallLogo";
 import { IdcardOutlined, SettingOutlined } from "@ant-design/icons";
+import Typography from "antd/es/typography/Typography";
+import logo from "../../../assets/icons/icon-512.png";
+import { Flex } from "antd";
+import React, { useEffect, useState } from "react";
 
 export interface DefaultLayoutProps {
   children: React.ReactNode;
@@ -94,7 +97,50 @@ export default function DefaultLayout({ children }: DefaultLayoutProps) {
         />
       </Sider>
       <Layout>
-        <Header style={{ padding: 0 }} />
+        <Header style={{ padding: 0 }}>
+          <Flex style={{ height: "100%", padding: "0.5em" }}>
+            <Flex
+              className="grey-bg"
+              style={{
+                height: "100%",
+                paddingLeft: "0.5em",
+                paddingRight: "0.5em",
+                verticalAlign: "middle",
+                borderRadius: "0.75em",
+              }}
+            >
+              <span
+                style={{
+                  height: "100%",
+                  verticalAlign: "middle",
+                  display: "inline-block",
+                }}
+              >
+                <img
+                  src="/assets/icons/icon-512.png"
+                  style={{
+                    height: "90%",
+                    width: "auto",
+                    position: "relative",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                  }}
+                />
+              </span>
+              <Typography
+                className="font-metal-mania"
+                style={{
+                  marginLeft: "0.5em",
+                  fontSize: "2.5em",
+                  verticalAlign: "middle",
+                  display: "inline-block",
+                }}
+              >
+                The Ritual
+              </Typography>
+            </Flex>
+          </Flex>
+        </Header>
         <Content
           style={{ marginTop: "1em", marginLeft: "1em", marginRight: "1em" }}
         >
