@@ -6,6 +6,7 @@ import "./index.css";
 import ScryfallSearchRoute from "./routes/ScryfallSearchRoute";
 import AdminOverview from "./routes/AdminOverview";
 import ListDecks from "./routes/ListDecks";
+import ViewDeck from "./routes/ViewDeck";
 
 const router = createHashRouter([
   {
@@ -19,6 +20,10 @@ const router = createHashRouter([
   {
     path: "/decks",
     element: <ListDecks />,
+  },
+  {
+    path: "/decks/view",
+    element: <ViewDeck />,
   },
   {
     path: "/scryfall/search",

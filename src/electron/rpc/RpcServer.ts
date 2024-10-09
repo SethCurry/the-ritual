@@ -8,9 +8,11 @@ import {
   RpcRequest,
   RPCResponseType,
 } from "./types";
+import { GetDeckByIdRequest, GetDeckByIdResponse } from "./models/DeckModels";
 
 export type TRpcHandlers = {
   listDecks: (data: ListDecksRequest) => Promise<ListDecksResponse>;
+  getDeckById: (data: GetDeckByIdRequest) => Promise<GetDeckByIdResponse>;
   scryfallBulkDataLoader: (data: object) => Promise<string[]>;
   createDeck: (data: CreateDeckRequest) => Promise<CreateDeckResponse>;
 };
@@ -40,57 +42,67 @@ export class RpcServer implements TRpcServer {
     this.ipc = ipc;
   }
 
+  private async invoke<T, P>(
+    handler: RpcHandler<T, P>,
+    event: TRpcEvent,
+    data: RpcRequest<T>
+  ): Promise<P> {
+    console.log("invoking handler", handler);
+    const wrapped = this.wrapHandler(handler);
+
+    try {
+      console.log("invoking wrapped handler");
+      const result = await wrapped(event, data);
+      console.log("got result", result);
+      return result;
+    } catch (error) {
+      console.log("failed to invoke handler", error);
+    }
+  }
+
+  async getDeckById(
+    event: TRpcEvent,
+    data: RpcRequest<GetDeckByIdRequest>
+  ): Promise<GetDeckByIdResponse> {
+    return this.invoke(this.handlers.getDeckById, event, data);
+  }
+
   async listDecks(
     event: TRpcEvent,
     data: RpcRequest<ListDecksRequest>
   ): Promise<ListDecksResponse> {
-    const wrapped = this.wrapHandler(this.handlers.listDecks);
-
-    try {
-      const result = await wrapped(event, data);
-      return result;
-    } catch (error) {
-      console.log("failed to list decks", error);
-    }
-
-    return;
+    return this.invoke(this.handlers.listDecks, event, data);
   }
 
   async scryfallBulkDataLoader(
     event: TRpcEvent,
     data: RpcRequest<object>
   ): Promise<string[]> {
-    const wrapped = this.wrapHandler(this.handlers.scryfallBulkDataLoader);
-
-    try {
-      const result = await wrapped(event, data);
-      return result;
-    } catch (error) {
-      console.log("failed to load scryfall bulk data", error);
-    }
+    return this.invoke(this.handlers.scryfallBulkDataLoader, event, data);
   }
 
   async createDeck(
     event: TRpcEvent,
     data: RpcRequest<CreateDeckRequest>
   ): Promise<CreateDeckResponse> {
-    const wrapped = this.wrapHandler(this.handlers.createDeck);
-
-    try {
-      const result = await wrapped(event, data);
-      return result;
-    } catch (error) {
-      console.log("failed to create deck", error);
-    }
+    return this.invoke(this.handlers.createDeck, event, data);
   }
 
   registerHandlers() {
     this.ipc.on("listDecks", (event, data) => {
-      try {
-        this.listDecks(event, data);
-      } catch (error) {
-        console.log("failed to list decks from register handlers", error);
-      }
+      this.listDecks(event, data);
+    });
+
+    this.ipc.on("getDeckById", (event, data) => {
+      this.getDeckById(event, data);
+    });
+
+    this.ipc.on("createDeck", (event, data) => {
+      this.createDeck(event, data);
+    });
+
+    this.ipc.on("scryfallBulkDataLoader", (event, data) => {
+      this.scryfallBulkDataLoader(event, data);
     });
   }
 

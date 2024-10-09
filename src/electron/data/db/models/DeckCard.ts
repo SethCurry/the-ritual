@@ -16,6 +16,6 @@ export default class DeckCard {
   @ManyToOne(() => Deck, (deck) => deck.cards)
   public deck: Deck;
 
-  @ManyToOne(() => Printing, (printing) => printing.deckCards)
+  @ManyToOne(() => Printing, (printing) => printing.deckCards, { eager: true })
   public printing: Printing;
 }

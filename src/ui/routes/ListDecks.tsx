@@ -5,15 +5,11 @@ import { Input, Table } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { ListDecksItem, ListDecksResponse } from "../../electron/rpc/types";
 import { getRpc } from "../util";
+import { Link } from "react-router-dom";
 
 export default function ListDecks() {
   const [decks, setDecks] = useState<ListDecksItem[]>([]);
-  const columns: ColumnsType<ListDecksItem> = [
-    {
-      title: "Name",
-      dataIndex: "name",
-    },
-  ];
+  const [idMap, setIdMap] = useState<Map<string, number>>();
 
   const rpc = getRpc();
 
@@ -21,10 +17,21 @@ export default function ListDecks() {
     rpc.listDecks({}).then((newDecks: ListDecksResponse) => {
       console.log("listDecks", newDecks);
       setDecks(newDecks.decks);
+      setIdMap(new Map(newDecks.decks.map((deck) => [deck.name, deck.id])));
     });
   }, [setDecks]);
 
   const [newDeckName, setNewDeckName] = useState("");
+
+  const columns: ColumnsType<ListDecksItem> = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      render: (text: string) => (
+        <Link to={`/decks/view?id=${idMap?.get(text)}`}>{text}</Link>
+      ),
+    },
+  ];
 
   return (
     <DefaultLayout>

@@ -13,6 +13,6 @@ export default class Deck {
   public name: string;
 
   /** The list of cards in the deck, which are linked to the printing. */
-  @ManyToOne(() => DeckCard, (card) => card.deck)
+  @ManyToOne(() => DeckCard, (card) => card.deck, { eager: true })
   public cards: DeckCard[];
 }

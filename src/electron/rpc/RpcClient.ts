@@ -23,15 +23,25 @@ export function createRpcClient(): TRpcClient {
     Object.assign(ret, {
       [key]: async (data: any) => {
         const responseChannel = key + "-response-" + Math.random().toString();
+        console.log(
+          "sending RPC request for ",
+          key,
+          " with response channel ",
+          responseChannel
+        );
+
         const request: RpcRequest<any> = {
           responseChannel,
           data: data,
         };
         ipcRenderer.send(key, request);
+        console.log("sent RPC request for ", key);
 
         return new Promise((resolve, reject) => {
           try {
+            console.log("waiting for RPC response for ", key);
             ipcRenderer.once(responseChannel, (event, resp) => {
+              console.log("got RPC response for ", key);
               resolve(resp);
             });
           } catch (e) {
